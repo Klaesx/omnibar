@@ -194,23 +194,31 @@ addon.Cooldowns = {
     [1044] = { duration = 25, class = "PALADIN", charges = 2 }, -- Blessing of Freedom
     [20066] = { duration = 15, class = "PALADIN" }, -- Repentance
     [31884] = { duration = 120, class = "PALADIN" }, -- Avenging Wrath
-        [31842] = { parent = 31884 }, -- Avenging Wrath (Holy)
         [216331] = { parent = 31884 }, -- Avenging Crusader
-        [224668] = { parent = 31884 }, -- Crusade
         [231895] = { parent = 31884 }, -- Crusade
     [115750] = { duration = 90, class = "PALADIN" }, -- Blinding Light
-	[304971] = { duration = 60, class = "PALADIN" }, -- Divine Toll
+	[152262] = { duration = 45, class = "PALADIN" }, -- Seraphim
+	[105809] = { duration = 180, class = "PALADIN" }, -- Holy Avenger
+	[6940] = { duration = 120, class = "PALADIN" }, -- Blessing of Sacrifice
+	[190784] = { duration = 45, class = "PALADIN" }, -- Divine Steed
+	[96231] = { default = true, duration = 15, class = "PALADIN", specID = { 66, 70 } }, -- Rebuke
+	
+
+	-- Paladin Covenant Spells
+		
+	[304971] = { duration = 60, class = "PALADIN" }, -- Divine Toll (Kyrian)
+	[328204] = { duration = 30, class = "PALADIN" }, -- Vanquisher's Hammer (Necrolord)
+	--[328620] = { duration = 45, class = "PALADIN" }, -- Blessing of Summer (Night Fae)
+	[316958] = { duration = 240, class = "PALADIN" }, -- Ashen Hallow (Venthyr)
 
         -- Holy
 
         [498] = { duration = 60, class = "PALADIN", specID = { 65, 66 } }, -- Divine Protection
-        [6940] = { duration = 120, class = "PALADIN", specID = { 65, 66 }, charges = 2 }, -- Blessing of Sacrifice
         [31821] = { duration = 180, class = "PALADIN", specID = { 65 } }, -- Aura Mastery
-        [105809] = { duration = 90, class = "PALADIN", specID = { 65 } }, -- Holy Avenger
         [114158] = { duration = 60, class = "PALADIN", specID = { 65 } }, -- Light's Hammer
-        [200652] = { duration = 90, class = "PALADIN", specID = { 65 } }, -- Tyr's Deliverance
         [210294] = { duration = 25, class = "PALADIN", specID = { 65 } }, -- Divine Favor
         [214202] = { duration = 30, class = "PALADIN", specID = { 65 }, charges = 2 }, -- Rule of Law
+		[4987] = { duration = 8, class = "PALADIN", specID = { 65 } }, -- Cleanse
 
         -- Protection
 
@@ -218,40 +226,50 @@ addon.Cooldowns = {
         [31935] = { default = true, duration = 15, class = "PALADIN", specID = { 66 } }, -- Avenger's Shield
         [86659] = { duration = 300, class = "PALADIN", specID = { 66 } }, -- Guardian of Ancient Kings
             [228049] = { parent = 86659 }, -- Guardian of the Forgotten Queen
-        [96231] = { default = true, duration = 15, class = "PALADIN", specID = { 66, 70 } }, -- Rebuke
-        [152262] = { duration = 30, class = "PALADIN", specID = { 66 } }, -- Seraphim
-        [190784] = { duration = 45, class = "PALADIN", specID = { 66 } }, -- Divine Steed
-        [209202] = { duration = 60, class = "PALADIN", specID = { 66 } }, -- Eye of Tyr
         [215652] = { duration = 25, class = "PALADIN", specID = { 66 } }, -- Shield of Virtue
 
         -- Retribution
 
         [184662] = { duration = 120, class = "PALADIN", specID = { 70 } }, -- Shield of Vengeance
-        [204939] = { duration = 60, class = "PALADIN", specID = { 70 } }, -- Hammer of Reckoning
         [205191] = { duration = 60, class = "PALADIN", specID = { 70 } }, -- Eye for an Eye
-        [205273] = { duration = 45, class = "PALADIN", specID = { 70 } }, -- Wake of Ashes
+        [255937] = { duration = 45, class = "PALADIN", specID = { 70 } }, -- Wake of Ashes
         [210220] = { duration = 180, class = "PALADIN", specID = { 70 } }, -- Holy Wrath
         [210256] = { duration = 45, class = "PALADIN", specID = { 70 } }, -- Blessing of Sanctuary
+		[343721] = { duration = 60, class = "PALADIN", specID = { 70 } }, -- Final Reckoning
 
     -- Druid
 
     [1850] = { duration = 120, class = "DRUID" }, -- Dash
         [252216] = { parent = 1850, duration = 45 }, -- Tiger Dash
-    [5211] = { duration = 50, class = "DRUID" }, -- Mighty Bash
+    [5211] = { duration = 60, class = "DRUID" }, -- Mighty Bash
     [20484] = { duration = 600, class = "DRUID" }, -- Rebirth
-    [102280] = { duration = 30, class = "DRUID" }, -- Displacer Beast
     [102359] = { duration = 30, class = "DRUID" }, -- Mass Entanglement
     [102401] = { duration = 15, class = "DRUID" }, -- Wild Charge
     [132469] = { duration = 30, class = "DRUID" }, -- Typhoon
-	[323764] = { duration = 120, class = "DRUID" }, -- Convoke the Spirits
+	[319454] = { duration = 300, class = "DRUID" }, -- Heart of the Wild
+	[106898] = { duration = 120, class = "DRUID" }, -- Stampeding Roar
+	[22812] = { duration = 60, class = "DRUID" }, -- Barkskin
+    [99] = { duration = 30, class = "DRUID" }, -- Incapacitating Roar
+    [22842] = { duration = 36, class = "DRUID" }, -- Frenzied Regeneration
+	[102793] = { duration = 60, class = "DRUID" }, -- Ursol's Vortex
+	[18562] = { duration = 15, class = "DRUID" }, -- Swiftmend
+	[108238] = { duration = 90, class = "DRUID" }, -- Renewal
+	[305497] = { duration = 45, class = "DRUID", specID = { 102, 103, 105} }, -- Thorns
+	[2782] = { duration = 8, class = "DRUID", specID = { 102, 103, 104 } }, -- Remove Corruption
+		[88423] = { parent = 2782, duration = 8, specID = { 105} }, -- Nature's Cure
+	[29166] = { duration = 180, class = "DRUID", specID = { 102, 105 } }, -- Innervate
+	
+		-- Druid Covenant Spells
+		
+		[338142] = { duration = 60, class = "DRUID" }, -- Heart of the Wild (Kyrian)
+		[325727] = { duration = 30, class = "DRUID" }, -- Adaptive Swarm (Necrolord)
+		[323764] = { duration = 120, class = "DRUID" }, -- Convoke the Spirits (Night Fae)
+		[323546] = { duration = 180, class = "DRUID" }, -- Ravenous Frenzy(Venthyr)
 
         -- Balance
 
-        [22812] = { duration = { default = 60, [104] = 35 }, class = "DRUID", specID = { 102, 104, 105 } }, -- Barkskin
-        [29166] = { duration = 180, class = "DRUID", specID = { 102, 105 } }, -- Innervate
         [78675] = { default = true, duration = 60, class = "DRUID", specID = { 102 } }, -- Solar Beam
         [102560] = { duration = 180, class = "DRUID", specID = { 102 } }, -- Incarnation: Chosen of Elune
-        [108238] = { duration = 120, class = "DRUID", specID = { 102, 103, 105 } }, -- Renewal
         [194223] = { duration = 180, class = "DRUID", specID = { 102 } }, -- Celestial Alignment
         [202425] = { duration = 45, class = "DRUID", specID = { 102 } }, -- Warrior of Elune
         [202770] = { duration = 60, class = "DRUID", specID = { 102 } }, -- Fury of Elune
@@ -265,80 +283,78 @@ addon.Cooldowns = {
         [61336] = { duration = { default = 180, [104] = 120 }, class = "DRUID", specID = { 103, 104 }, charges = 2 }, -- Survival Instincts
         [102543] = { duration = 180, class = "DRUID", specID = { 103 } }, -- Incarnation: King of the Jungle
         [106839] = { default = true, duration = 15, class = "DRUID", specID = { 103, 104 } }, -- Skull Bash
-        [106898] = { duration = 120, class = "DRUID", specID = { 103, 104 } }, -- Stampeding Roar
         [106951] = { duration = 180, class = "DRUID", specID = { 103 } }, -- Berserk
-        [202060] = { duration = 45, class = "DRUID", specID = { 103 } }, -- Elune's Guidance
         [203242] = { duration = 60, class = "DRUID", specID = { 103 } }, -- Rip and Tear
-        [210722] = { duration = 75, class = "DRUID", specID = { 103 } }, -- Ashamane's Frenzy
+        [274837] = { duration = 45, class = "DRUID", specID = { 103 } }, -- Feral Frenzy
 
         -- Guardian
 
-        [99] = { duration = 30, class = "DRUID", specID = { 104 } }, -- Incapacitating Roar
-        [22842] = { duration = 36, class = "DRUID", specID = { 104 } }, -- Frenzied Regeneration
         [102558] = { duration = 180, class = "DRUID", specID = { 104 } }, -- Incarnation: Guardian of Ursoc
-        [200851] = { duration = 90, class = "DRUID", specID = { 104 } }, -- Rage of the Sleeper
         [202246] = { duration = 15, class = "DRUID", specID = { 104 } }, -- Overrun
-        [204066] = { duration = 90, class = "DRUID", specID = { 104 } }, -- Lunar Beam
+        [201664] = { duration = 30, class = "DRUID", specID = { 105} }, -- Demoralizing Roar
 
         -- Restoration
 
         [740] = { duration = 180, class = "DRUID", specID = { 105} }, -- Tranquility
-        [18562] = { duration = 25, class = "DRUID", specID = { 105}, charges = 2 }, -- Swiftmend
         [33891] = { duration = 180, class = "DRUID", specID = { 105} }, -- Incarnation: Tree of Life
-        [102342] = { duration = 60, class = "DRUID", specID = { 105} }, -- Ironbark
+        [102342] = { duration = 90, class = "DRUID", specID = { 105} }, -- Ironbark
         [102351] = { duration = 30, class = "DRUID", specID = { 105} }, -- Cenarion Ward
-        [102793] = { duration = 60, class = "DRUID", specID = { 105} }, -- Ursol's Vortex
         [197721] = { duration = 90, class = "DRUID", specID = { 105} }, -- Flourish
-        [201664] = { duration = 60, class = "DRUID", specID = { 105} }, -- Demoralizing Roar
-        [203651] = { duration = 45, class = "DRUID", specID = { 105} }, -- Overgrowth
-        [305497] = { duration = 45, class = "DRUID", specID = { 102, 103, 105} }, -- Thorns
-        [208253] = { duration = 90, class = "DRUID", specID = { 105} }, -- Essence of G'Hanir
+        [203651] = { duration = 60, class = "DRUID", specID = { 105} }, -- Overgrowth
+		[132158] = { duration = 60, class = "DRUID", specID = { 105} }, -- Nature's Swiftness
 
     -- Warrior
 
     [100] = { duration = 20, class = "WARRIOR" }, -- Charge
     [147833] = {duration = 30, class = "WARRIOR" }, -- Intervene
-    [1719] = { duration = 90, class = "WARRIOR" }, -- Recklessness
-    [6544] = { duration = 30, class = "WARRIOR", charges = 2 }, -- Heroic Leap
+    [6544] = { duration = 45, class = "WARRIOR", charges = 2 }, -- Heroic Leap
     [6552] = { default = true, duration = 15, class = "WARRIOR" }, -- Pummel
     [18499] = { duration = 60, class = "WARRIOR" }, -- Berserker Rage
     [23920] = { duration = 25, class = "WARRIOR" }, -- Spell Reflection
-        [213915] = { parent = 23920, duration = 30 }, -- Mass Spell Reflection
-        [216890] = { parent = 23920 }, -- Spell Reflection (Arms, Fury)
-    [46968] = { duration = 40, class = "WARRIOR" }, -- Shockwave
     [107570] = { duration = 30, class = "WARRIOR" }, -- Storm Bolt
     [107574] = { duration = 90, class = "WARRIOR" }, -- Avatar
     [236077] = { duration = 45, class = "WARRIOR" }, -- Disarm
-        [236236] = { parent = 236077 }, -- Disarm (Protection)
+	[5246] = { duration = 90, class = "WARRIOR" }, -- Intimidating Shout
+	[97462] = { duration = 180, class = "WARRIOR" }, -- Rallying Cry
+	[64382] = { duration = 180, class = "WARRIOR" }, -- Shattering Throw
+
+		-- Warrior Covenant Spells
+		
+		[307865] = { duration = 60, class = "WARRIOR" }, -- Spear of Bastion (Kyrian)
+		[324143] = { duration = 180, class = "WARRIOR" }, -- Conqueror's Banner (Necrolord)
+		[325886] = { duration = 90, class = "WARRIOR" }, -- Ancient Aftershock (Night Fae)
 
         -- Arms
 
-        [5246] = { duration = 90, class = "WARRIOR", specID = { 71, 72 } }, -- Intimidating Shout
-        [97462] = { duration = 180, class = "WARRIOR", specID = { 71, 72, 73 } }, -- Rallying Cry
         [118038] = { duration = 120, class = "WARRIOR", specID = { 71 } }, -- Die by the Sword
         [167105] = { duration = 45, class = "WARRIOR", specID = { 71 } }, -- Colossus Smash
             [262161] = { parent = 167105 }, -- Warbreaker
-        [197690] = { duration = 10, class = "WARRIOR", specID = { 71 } }, -- Defensive Stance
-        [198817] = { duration = 45, class = "WARRIOR", specID = { 71 } }, -- Sharpen Blade
+        [197690] = { duration = 6, class = "WARRIOR", specID = { 71 } }, -- Defensive Stance
+        [198817] = { duration = 25, class = "WARRIOR", specID = { 71 } }, -- Sharpen Blade
         [227847] = { duration = 60, class = "WARRIOR", specID = { 71, 72 } }, -- Bladestorm (Arms)
             [46924] = { parent = 227847 }, -- Bladestorm (Fury)
             [152277] = { parent = 227847 }, -- Ravager
         [236273] = { duration = 60 , class = "WARRIOR", specID = { 71 } }, -- Duel
-
+		[236320] = { duration = 90 , class = "WARRIOR", specID = { 71 } }, -- War Banner
+		[260708] = { duration = 30 , class = "WARRIOR", specID = { 71 } }, -- Sweeping Strikes
+		[12323] = { duration = 30 , class = "WARRIOR", specID = { 71, 72 } }, -- Piercing Howl
+		[262228] = { duration = 60 , class = "WARRIOR", specID = { 71 } }, -- Deadly Calm
+	
         -- Fury
 
         [184364] = { duration = 120, class = "WARRIOR", specID = { 72 } }, -- Enraged Regeneration
-        [205545] = { duration = 45, class = "WARRIOR", specID = { 72 } }, -- Odyn's Fury
+        [1719] = { duration = 90, class = "WARRIOR", specID = { 72 } }, -- Recklessness
 
         -- Protection
 
         [871] = { duration = 240, class = "WARRIOR", specID = { 73 } }, -- Shield Wall
         [1160] = { duration = 45, class = "WARRIOR", specID = { 73 } }, -- Demoralizing Shout
         [12975] = { duration = 180, class = "WARRIOR", specID = { 73 } }, -- Last Stand
-        [118000] = { duration = 35, class = "WARRIOR", specID = { 73 } }, -- Dragon Roar
+        [118000] = { duration = 30, class = "WARRIOR", specID = { 73 } }, -- Dragon Roar
         [206572] = { duration = 20, class = "WARRIOR", specID = { 73 } }, -- Dragon Charge
         [213871] = { duration = 15, class = "WARRIOR", specID = { 73 } }, -- Bodyguard
-        [228920] = { duration = 60, class = "WARRIOR", specID = { 73 } }, -- Ravager
+        [228920] = { duration = 45, class = "WARRIOR", specID = { 73 } }, -- Ravager
+		[46968] = { duration = 40, class = "WARRIOR", specID = { 73 } }, -- Shockwave
 
     -- Warlock
 
