@@ -358,18 +358,13 @@ addon.Cooldowns = {
 
     -- Warlock
 
-    [1122] = { duration = 180, class = "WARLOCK" }, -- Summon Infernal
     [6358] = { duration = 30, class = "WARLOCK" }, -- Seduction
         [115268] = { parent = 6358 }, -- Mesmerize
-    [6360] = { duration = 25, class = "WARLOCK" }, -- Whiplash
-        [115770] = { parent = 6360 }, -- Fellash
     [6789] = { duration = 45, class = "WARLOCK" }, -- Mortal Coil
     [20707] = { duration = 600, class = "WARLOCK" }, -- Soulstone
     [30283] = { duration = 60, class = "WARLOCK" }, -- Shadowfury
     [104773] = { duration = 180, class = "WARLOCK" }, -- Unending Resolve
     [108416] = { duration = 60, class = "WARLOCK" }, -- Dark Pact
-    [108501] = { duration = 90, class = "WARLOCK" }, -- Grimoire of Service
-    [111896] = { duration = 90, class = "WARLOCK" }, -- Grimoire: Succubus
     [119910] = { default = true, duration = 24, class = "WARLOCK" }, -- Spell Lock (Command Demon)
         [19647] = { parent = 119910 }, -- Spell Lock (Felhunter)
         [119911] = { parent = 119910 }, -- Optical Blast (Command Demon)
@@ -378,21 +373,31 @@ addon.Cooldowns = {
         [171138] = { parent = 119910 }, -- Shadow Lock (Doomguard)
         [171139] = { parent = 119910 }, -- Shadow Lock (Grimoire of Sacrifice)
         [171140] = { parent = 119910 }, -- Shadow Lock (Command Demon)
-    [171152] = { duration = 60, class = "WARLOCK" }, -- Meteor Strike
-    [196098] = { duration = 120, class = "WARLOCK" }, -- Soul Harvest
-    [199890] = { duration = 15, class = "WARLOCK" }, -- Curse of Tongues
-    [199892] = { duration = 20, class = "WARLOCK" }, -- Curse of Weakness
-    [199954] = { duration = 45, class = "WARLOCK" }, -- Curse of Fragility
+    [199954] = { duration = 45, class = "WARLOCK" }, -- Bane of Fragility
     [212295] = { duration = 45, class = "WARLOCK" }, -- Nether Ward
-    [221703] = { duration = 30, class = "WARLOCK" }, -- Casting Circle
+    [221703] = { duration = 60, class = "WARLOCK" }, -- Casting Circle
+	[5484] = { duration = 40, class = "WARLOCK" }, -- Howl of Terror
+	[333889] = { duration = 180, class = "WARLOCK" }, -- Fel Domination
+	[48020] = { duration = 30, class = "WARLOCK" }, -- Demonic Circle: Teleport
+	[328774] = { duration = 45, class = "WARLOCK" }, -- Amplify Curse
+	[234877] = { duration = 30, class = "WARLOCK" }, -- Bane of Shadows
+	[108503] = { duration = 30, class = "WARLOCK", specID = { 265, 267 } }, -- Grimoire of Sacrifice
+	
+		-- Warlock Cov
+		
+		[312321] = { duration = 40, class = "WARLOCK" }, -- Scouring Tithe (Kyrian)
+		[325289] = { duration = 45, class = "WARLOCK" }, -- Decimating Bolt (Necrolord)
+		[325640] = { duration = 60, class = "WARLOCK" }, -- Soul Rot (Night Fae)
+		[321792] = { duration = 60, class = "WARLOCK" }, -- Impending Catastrophe (Venthyr)
 
         -- Affliction
 
-        [5484] = { duration = 40, class = "WARLOCK", specID = { 265 } }, -- Howl of Terror
         [48181] = { duration = 15, class = "WARLOCK", specID = { 265 } }, -- Haunt
-        [86121] = { duration = 20, class = "WARLOCK", specID = { 265 } }, -- Soul Swap
         [113860] = { duration = 120, class = "WARLOCK", specID = { 265 } }, -- Dark Soul: Misery
         [205179] = { duration = 45, class = "WARLOCK", specID = { 265 } }, -- Phantom Singularity
+		[205180] = { duration = 180, class = "WARLOCK", specID = { 265 } }, -- Summon Darkglare
+		[264106] = { duration = 45, class = "WARLOCK", specID = { 265 } }, -- Deathbolt
+		--[344566] = { duration = 30, class = "WARLOCK", specID = { 265 } }, -- Rapid Contagion
 
         -- Demonology
 
@@ -400,22 +405,23 @@ addon.Cooldowns = {
             [115831] = { parent = 89751 }, -- Wrathstorm
         [89766] = { duration = 30, class = "WARLOCK", specID = { 266 } }, -- Axe Toss
         [201996] = { duration = 90, class = "WARLOCK", specID = { 266 } }, -- Call Observer
-        [205180] = { duration = 24, class = "WARLOCK", specID = { 266 } }, -- Summon Darkglare
-        [205181] = { duration = 14, class = "WARLOCK", specID = { 266 }, charges = 2 }, -- Shadowflame
-        [211714] = { duration = 45, class = "WARLOCK", specID = { 266 } }, -- Thal'kiel's Consumption
         [212459] = { duration = 90, class = "WARLOCK", specID = { 266 } }, -- Call Fel Lord
         [212619] = { duration = 24, class = "WARLOCK", specID = { 266 } }, -- Call Felhunter
         [212623] = { duration = 15, class = "WARLOCK", specID = { 266 } }, -- Singe Magic
+		[265187] = { duration = 90, class = "WARLOCK", specID = { 266 } }, -- Summon Demonic Tyrant
+		[267171] = { duration = 60, class = "WARLOCK", specID = { 266 } }, -- Demonic Strength
+		[111898] = { duration = 120, class = "WARLOCK", specID = { 266 } }, -- Grimoire: Felguard
+		[267217] = { duration = 180, class = "WARLOCK", specID = { 266 } }, -- Nether Portal
 
         --  Destruction
 
         [17962] = { duration = 12, class = "WARLOCK", specID = { 267 }, charges = 2 }, -- Conflagrate
         [80240] = { duration = 30, class = "WARLOCK", specID = { 267 } }, -- Havoc
         [113858] = { duration = 120, class = "WARLOCK", specID = { 267 } }, -- Dark Soul: Instability
-        [152108] = { duration = 45, class = "WARLOCK", specID = { 267 } }, -- Cataclysm
-        [196447] = { duration = 15, class = "WARLOCK", specID = { 267 } }, -- Channel Demonfire
-        [196586] = { duration = 45, class = "WARLOCK", specID = { 267 }, charges = 3 }, -- Dimensional Rift
-        [212284] = { duration = 45, class = "WARLOCK", specID = { 267 } }, -- Firestone
+        [152108] = { duration = 30, class = "WARLOCK", specID = { 267 } }, -- Cataclysm
+        [196447] = { duration = 25, class = "WARLOCK", specID = { 267 } }, -- Channel Demonfire
+		[1122] = { duration = 180, class = "WARLOCK", specID = { 267 } }, -- Summon Infernal
+		[6353] = { duration = 45, class = "WARLOCK", specID = { 267 } }, -- Soul Fire
 
     -- Shaman
 
