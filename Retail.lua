@@ -22,7 +22,20 @@ addon.Cooldowns = {
     [61999] = { duration = 600, class = "DEATHKNIGHT" }, -- Raise Ally
     [77606] = { duration = 20, class = "DEATHKNIGHT" }, -- Dark Simulacrum
     [212552] = { duration = 60, class = "DEATHKNIGHT" }, -- Wraith Walk
-
+	[48792] = { duration = 180, class = "DEATHKNIGHT" }, -- Icebound Fortitude
+	[49039] = { duration = 120, class = "DEATHKNIGHT" }, -- Lichborne
+	[288977] = { duration = 45, class = "DEATHKNIGHT", specID = { 251, 252 } }, -- Transfusion
+	[48743] = { duration = 120, class = "DEATHKNIGHT" }, -- Death Pact
+	[46585] = { duration = 120, class = "DEATHKNIGHT" }, -- Raise Dead
+	[327574] = { duration = 120, class = "DEATHKNIGHT" }, -- Sacrificial Pact
+	
+		-- DK Covenant Spells
+		
+		[312202] = { duration = 60, class = "DEATHKNIGHT" },  -- Shackle the Unworthy (Kyrian)
+		[315443] = { duration = 120, class = "DEATHKNIGHT" },  -- Abomination Limb (Necrolord)
+		[324128] = { duration = 30, class = "DEATHKNIGHT" },  -- Death's Due (Night Fae)
+		[311648] = { duration = 60, class = "DEATHKNIGHT" },  -- Swarming Mist (Venthyr)	
+	
         -- Blood
 
         [43265] = { duration = 30, class = "DEATHKNIGHT", specID = { 250, 252 } }, -- Death and Decay
@@ -43,109 +56,119 @@ addon.Cooldowns = {
 
         -- Frost
 
-        [47568] = { duration = 120, class = "DEATHKNIGHT", specID = { 251 }, charges = 2 }, -- Empower Rune Weapon
-            [207127] = { parent = 47568 }, -- Hungering Rune Weapon
-        [48792] = { duration = 180, class = "DEATHKNIGHT", specID = { 251, 252 } }, -- Icebound Fortitude
-        [51271] = { duration = 45, class = "DEATHKNIGHT", specID = { 251 } }, -- Pillar of Frost
+   		[47568] = { duration = 105, class = "DEATHKNIGHT", specID = { 251 } }, -- Empower Rune
+        [51271] = { duration = 60, class = "DEATHKNIGHT", specID = { 251 } }, -- Pillar of Frost
         [152279] = { duration = 120, class = "DEATHKNIGHT", specID = { 251} }, -- Breath of Sindragosa
         [196770] = { duration = 20, class = "DEATHKNIGHT", specID = { 251 } }, -- Remorseless Winter
-        [204143] = { duration = 45, class = "DEATHKNIGHT", specID = { 251 } }, -- Killing Machine
         [204160] = { duration = 45, class = "DEATHKNIGHT", specID = { 251 } }, -- Chill Streak
         [207167] = { duration = 60, class = "DEATHKNIGHT", specID = { 251} }, -- Blinding Sleet
-        [207256] = { duration = 90, class = "DEATHKNIGHT", specID = { 251} }, -- Obliteration
         [279302] = { duration = 180, class = "DEATHKNIGHT", specID = { 251} }, -- Frostwyrm's Fury
 
         -- Unholy
 
-        [42650] = { duration = 480, class = "DEATHKNIGHT", specID = { 252 } }, -- Army of the Dead
+        --[42650] = { duration = 480, class = "DEATHKNIGHT", specID = { 252 } }, -- Army of the Dead
+			--[288853] = { parent = 42650, duration = 90 }, -- Raise Abomination
+		[288853] = { duration = 90, class = "DEATHKNIGHT", specID = { 252 } }, -- Raise Abomination
         [63560] = { duration = 60, class = "DEATHKNIGHT", specID = { 252 } }, -- Dark Transformation
         [43265] = { duration = 30, class = "DEATHKNIGHT", specID = { 252 } }, -- Death and Decay
-            [152280] = { parent = 43265 }, -- Defile
+            [152280] = { parent = 43265, duration = 20, specID = { 252 } }, -- Defile
         [47481] = { duration = 90, class = "DEATHKNIGHT", specID = { 252 } }, -- Gnaw (Ghoul)
         [47482] = { duration = 30, class = "DEATHKNIGHT", specID = { 252 } }, -- Leap (Ghoul)
         [49206] = { duration = 180, class = "DEATHKNIGHT", specID = { 252 } }, -- Summon Gargoyle
             [207349] = { parent = 49206 }, -- Dark Arbiter
         [91802] = { duration = 30, class = "DEATHKNIGHT", specID = { 252 } }, -- Shambling Rush (Ghoul)
-        [207289] = { duration = 120, class = "DEATHKNIGHT", specID = { 252 } }, -- Unholy Frenzy
-        [207319] = { duration = 60, class = "DEATHKNIGHT", specID = { 252 } }, -- Corpse Shield
+        [207289] = { duration = 75, class = "DEATHKNIGHT", specID = { 252 } }, -- Unholy Assault
         [220143] = { duration = 90, class = "DEATHKNIGHT", specID = { 252 } }, -- Apocalypse
+		[115989] = { duration = 45, class = "DEATHKNIGHT", specID = { 252 } }, -- Unholy Blight
 
     -- Demon Hunter
 
     [179057] = { duration = 60, class = "DEMONHUNTER" }, -- Chaos Nova
     [183752] = { default = true, duration = 15, class = "DEMONHUNTER" }, -- Disrupt
-    [188499] = { duration = 9, class = "DEMONHUNTER" }, -- Blade Dance
     [188501] = { duration = 30, class = "DEMONHUNTER" }, -- Spectral Sight
-    [191427] = { duration = 105, class = "DEMONHUNTER" }, -- Metamorphosis
+    [191427] = { duration = 240, class = "DEMONHUNTER" }, -- Metamorphosis
         [187827] = { parent = 191427, duration = 180 }, -- Metamorphosis (Vengeance)
         [162264] = { parent = 191427 }, -- Metamorphosis
-    [196718] = { duration = 180, class = "DEMONHUNTER" }, -- Darkness
-    [198013] = { duration = 30, class = "DEMONHUNTER" }, -- Eye Beam
-    [198793] = { duration = 25, class = "DEMONHUNTER" }, -- Vengeful Retreat
-    [203704] = { duration = 60, class = "DEMONHUNTER" }, -- Mana Break
     [205604] = { duration = 60, class = "DEMONHUNTER" }, -- Reverse Magic
-    [206649] = { duration = 45, class = "DEMONHUNTER" }, -- Eye of Leotheras
-    [206803] = { duration = 60, class = "DEMONHUNTER" }, -- Rain from Above
-    [212800] = { duration = 60, class = "DEMONHUNTER" }, -- Blur
-        [196555] = { parent = 212800, duration = 90 }, -- Netherwalk
-    [214743] = { duration = 60, class = "DEMONHUNTER" }, -- Soul Carver
-        [207407] = { parent = 214743 }, -- Soul Carver (Vengeance)
     [221527] = { duration = 45, class = "DEMONHUNTER" }, -- Imprison
-    [323639] = { duration = 90, class = "DEMONHUNTER" }, -- The Hunt
+	
+		-- DH Covenant Spells
+		
+		[306830] = { duration = 60, class = "DEMONHUNTER" }, -- Elysian Decree (Kyrian)
+		--[329554] = { duration = 120, class = "DEMONHUNTER" }, -- Fodder to the Flame (Necrolord)
+		[323639] = { duration = 90, class = "DEMONHUNTER" }, -- The Hunt (Night Fae)
+		[317009] = { duration = 60, class = "DEMONHUNTER" }, -- Sinful Brand (Venthyr)
 
         -- Havoc
 
-        [201467] = { duration = 60, class = "DEMONHUNTER", specID = { 577 } }, -- Fury of the Illidari
-        [206491] = { duration = 120, class = "DEMONHUNTER", specID = { 577 } }, -- Nemesis
-        [211881] = { duration = 30, class = "DEMONHUNTER", specID = { 577, 581 } }, -- Fel Eruption
+		[211881] = { duration = 30, class = "DEMONHUNTER", specID = { 577 } }, -- Fel Eruption
+		[198589] = { duration = 60, class = "DEMONHUNTER", specID = { 577 }  }, -- Blur
+		[196555] = { duration = 180, class = "DEMONHUNTER", specID = { 577 }  }, -- Netherwalk
+		[258925] = { duration = 60, class = "DEMONHUNTER", specID = { 577 }  }, -- Fel Barrage
+		[206803] = { duration = 60, class = "DEMONHUNTER", specID = { 577 }  }, -- Rain from Above
+		[206649] = { duration = 45, class = "DEMONHUNTER", specID = { 577 }  }, -- Eye of Leotheras
+		[203704] = { duration = 60, class = "DEMONHUNTER", specID = { 577 }  }, -- Mana Break
+		[198013] = { duration = 30, class = "DEMONHUNTER", specID = { 577 }  }, -- Eye Beam
+		[196718] = { duration = 180, class = "DEMONHUNTER", specID = { 577 }  }, -- Darkness	
+		--[188499] = { duration = 9, class = "DEMONHUNTER", specID = { 577 }  }, -- Blade Dance
+		[198793] = { duration = 25, class = "DEMONHUNTER", specID = { 577 }  }, -- Vengeful Retreat
+		[232893] = { duration = 15, class = "DEMONHUNTER", specID = { 577 }  }, -- Felblade
 
         -- Vengeance
 
         [202137] = { duration = 60, class = "DEMONHUNTER", specID = { 581 } }, -- Sigil of Silence
-        [202138] = { duration = 120, class = "DEMONHUNTER", specID = { 581 } }, -- Sigil of Chains
+        [202138] = { duration = 90, class = "DEMONHUNTER", specID = { 581 } }, -- Sigil of Chains
         [204021] = { duration = 60, class = "DEMONHUNTER", specID = { 581 } }, -- Fiery Brand
         [204596] = { duration = 30, class = "DEMONHUNTER", specID = { 581 } }, -- Sigil of Flame
-        [205629] = { duration = 30,  class = "DEMONHUNTER", specID = { 581 } }, -- Demonic Trample
-        [205630] = { duration = 90, class = "DEMONHUNTER", specID = { 581 } }, -- Illidan's Grasp
+        [205629] = { duration = 20,  class = "DEMONHUNTER", specID = { 581 } }, -- Demonic Trample
+        [205630] = { duration = 60, class = "DEMONHUNTER", specID = { 581 } }, -- Illidan's Grasp
         [207684] = { duration = 90, class = "DEMONHUNTER", specID = { 581 } }, -- Sigil of Misery
-        [207810] = { duration = 120, class = "DEMONHUNTER", specID = { 581 } }, -- Nether Bond
-        [263648] = { duration = 20, class = "DEMONHUNTER", specID = { 581 } }, -- Soul Barrier
+        [263648] = { duration = 30, class = "DEMONHUNTER", specID = { 581 } }, -- Soul Barrier
 
     -- Priest
 
     [586] = { duration = 30, class = "PRIEST" }, -- Fade
-        [213602] = { parent = 586 }, -- Greater Fade
+        [213602] = { parent = 586, duration = 45 }, -- Greater Fade
     [32375] = { duration = 45, class = "PRIEST" }, -- Mass Dispel
-	[323673] = { duration = 45, class = "PRIEST" }, -- Mindgames
     [316262] = { duration = 90, class = "PRIEST" }, -- Thoughtsteal
-    [32379] = { duration = 15, class = "PRIEST" }, -- Shadow Word: Death
+    [32379] = { duration = 20, class = "PRIEST" }, -- Shadow Word: Death
+	[10060] = { duration = 120, class = "PRIEST" }, -- Power Infusion
+	[19236] = { duration = 90, class = "PRIEST" }, -- Desperate Prayer
+	[8122] = { duration = 30, class = "PRIEST" }, -- Psychic Scream
+	[73325] = { duration = 90, class = "PRIEST" }, -- Leap of Faith
+	
+		-- Priest Covenant Spells
+		
+		[325013] = { duration = 180, class = "PRIEST" }, -- Boon of the Ascended (Kyrian)
+		[324724] = { duration = 60, class = "PRIEST" }, -- Unholy Nova (Necrolord)
+		[327661] = { duration = 90, class = "PRIEST" }, -- Fae Guardians (Night Fae)
+		[323673] = { duration = 45, class = "PRIEST" }, -- Mindgames (Venthyr)
 
         -- Discipline
 
-        [8122] = { duration = 30, class = "PRIEST", specID = { 256, 257, 258 } }, -- Psychic Scream
-        [10060] = { duration = 120, class = "PRIEST", specID = { 256, 258 } }, -- Power Infusion
         [33206] = { duration = 180, class = "PRIEST", specID = { 256 } }, -- Pain Suppression
         [34433] = { duration = 180, class = "PRIEST", specID = { 256, 258 } }, -- Shadowfiend
             [123040] = { parent = 34433, duration = 60 }, -- Mindbender (Discipline)
             [200174] = { parent = 34433, duration = 60 }, -- Mindbender (Shadow)
         [47536] = { duration = 90, class = "PRIEST", specID = { 256 } }, -- Rapture
         [62618] = { duration = 180, class = "PRIEST", specID = { 256 } }, -- Power Word: Barrier
-        [73325] = { duration = 90, class = "PRIEST", specID = { 256, 257, 258 } }, -- Leap of Faith
         [197862] = { duration = 60, class = "PRIEST", specID = { 256 } }, -- Archangel
         [197871] = { duration = 60, class = "PRIEST", specID = { 256 } }, -- Dark Archangel
         [204263] = { duration = 45, class = "PRIEST", specID = { 256, 257 } }, -- Shining Force
+		[109964] = { duration = 60, class = "PRIEST", specID = { 256 } }, -- Spirit Shel
+		[527] = { duration = 8, class = "PRIEST", specID = { 256, 257 }, charges = 2 }, -- Purify
 
         -- Holy
 
-        [19236] = { duration = 90, class = "PRIEST", specID = { 256, 257 } }, -- Desperate Prayer
         [47788] = { duration = 180, class = "PRIEST", specID = { 257 } }, -- Guardian Spirit
         [64843] = { duration = 180, class = "PRIEST", specID = { 257 } }, -- Divine Hymn
         [64901] = { duration = 300, class = "PRIEST", specID = { 257 } }, -- Symbol of Hope
-        [196762] = { duration = 30, class = "PRIEST", specID = { 257 } }, -- Inner Focus
         [197268] = { duration = 60, class = "PRIEST", specID = { 257 } }, -- Ray of Hope
         [200183] = { duration = 120, class = "PRIEST", specID = { 257 } }, -- Apotheosis
         [213610] = { duration = 30, class = "PRIEST", specID = { 257 } }, -- Holy Ward
-        [215769] = { duration = 300, class = "PRIEST", specID = { 257 } }, -- Spirit of Redemption
+        --[215769] = { duration = 300, class = "PRIEST", specID = { 257 } }, -- Spirit of Redemption
+		[215769] = { duration = 180, class = "PRIEST", specID = { 257 } }, -- Spirit of the Redeemer
+		[289657] = { duration = 45, class = "PRIEST", specID = { 257 } }, -- Holy Word: Concentration
 
         -- Shadow
 
@@ -154,10 +177,12 @@ addon.Cooldowns = {
         [47585] = { duration = 120, class = "PRIEST", specID = { 258 } }, -- Dispersion
         [64044] = { duration = 45, class = "PRIEST", specID = { 258 } }, -- Psychic Horror
         [108968] = { duration = 300, class = "PRIEST", specID = { 258 } }, -- Void Shift
-        [193223] = { duration = 240, class = "PRIEST", specID = { 258 } }, -- Surrender to Madness
-        [205065] = { duration = 45, class = "PRIEST", specID = { 258 } }, -- Void Torrent
+        [319952] = { duration = 90, class = "PRIEST", specID = { 258 } }, -- Surrender to Madness
+        [263165] = { duration = 30, class = "PRIEST", specID = { 258 } }, -- Void Torrent
         [205369] = { duration = 30, class = "PRIEST", specID = { 258 } }, -- Mind Bomb
         [211522] = { duration = 45, class = "PRIEST", specID = { 258 } }, -- Psyfiend
+		[228260] = { duration = 90, class = "PRIEST", specID = { 258 } }, -- Void Eruption
+		[341374] = { duration = 45, class = "PRIEST", specID = { 258 } }, -- Damnation
 
     -- Paladin
 
