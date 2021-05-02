@@ -204,12 +204,12 @@ addon.Cooldowns = {
 	[96231] = { default = true, duration = 15, class = "PALADIN", specID = { 66, 70 } }, -- Rebuke
 	
 
-	-- Paladin Covenant Spells
+		-- Paladin Covenant Spells
 		
-	[304971] = { duration = 60, class = "PALADIN" }, -- Divine Toll (Kyrian)
-	[328204] = { duration = 30, class = "PALADIN" }, -- Vanquisher's Hammer (Necrolord)
-	--[328620] = { duration = 45, class = "PALADIN" }, -- Blessing of Summer (Night Fae)
-	[316958] = { duration = 240, class = "PALADIN" }, -- Ashen Hallow (Venthyr)
+		[304971] = { duration = 60, class = "PALADIN" }, -- Divine Toll (Kyrian)
+		[328204] = { duration = 30, class = "PALADIN" }, -- Vanquisher's Hammer (Necrolord)
+		--[328620] = { duration = 45, class = "PALADIN" }, -- Blessing of Summer (Night Fae)
+		[316958] = { duration = 240, class = "PALADIN" }, -- Ashen Hallow (Venthyr)
 
         -- Holy
 
@@ -428,7 +428,6 @@ addon.Cooldowns = {
     [2825] = { duration = 60, class = "SHAMAN" }, -- Bloodlust
         [32182] = { parent = 2825 }, -- Heroism
     [20608] = { duration = 1800, class = "SHAMAN" }, -- Reincarnation
-    [51485] = { duration = 30, class = "SHAMAN" }, -- Earthgrab Totem
     [51514] = { duration = { default = 30, [264] = 10 }, class = "SHAMAN" }, -- Hex
         [196932] = { parent = 51514 }, -- Voodoo Totem
         [210873] = { parent = 51514 }, -- Hex (Compy)
@@ -450,35 +449,41 @@ addon.Cooldowns = {
     [192077] = { duration = 120, class = "SHAMAN" }, -- Wind Rush Totem
     [204330] = { duration = 45, class = "SHAMAN" }, -- Skyfury Totem
     [204331] = { duration = 45, class = "SHAMAN" }, -- Counterstrike Totem
-    [204332] = { duration = 30, class = "SHAMAN" }, -- Windfury Totem
+	[8143] = { duration = 60, class = "SHAMAN" }, -- Tremor Totem
+	[198103] = { duration = 300, class = "SHAMAN" }, -- Earth Elemental
+	[5394] = { duration = 30, class = "SHAMAN" }, -- Healing Stream Totem
+	[204336] = { duration = 30, class = "SHAMAN" }, -- Grounding Totem
+	
+		-- Shaman Cov
+		
+		[324386] = { duration = 60, class = "SHAMAN" }, -- Vesper Totem (Kyrian)
+		[326059] = { duration = 45, class = "SHAMAN" }, -- Primordial Wave(Necrolord)
+		[328923] = { duration = 120, class = "SHAMAN" }, -- Fae Transfusion (Night Fae)
+		[320674] = { duration = 90, class = "SHAMAN" }, -- Chain Harvest (Venthyr)
 
         -- Elemental
 
-        [16166] = { duration = 120, class = "SHAMAN", specID = { 262 } }, -- Elemental Mastery
         [51490] = { duration = 45, class = "SHAMAN", specID = { 262 } }, -- Thunderstorm
         [108281] = { duration = 120, class = "SHAMAN", specID = { 262, 264 } }, -- Ancestral Guidance
-        [192063] = { duration = 15, class = "SHAMAN", specID = { 262, 264 } }, -- Gust of Wind
         [192222] = { duration = 60, class = "SHAMAN", specID = { 262 } }, -- Liquid Magma Totem
         [198067] = { duration = 150, class = "SHAMAN", specID = { 262 } }, -- Fire Elemental
             [192249] = { parent = 198067 }, -- Storm Elemental
         [198103] = { duration = 120, class = "SHAMAN", specID = { 262 } }, -- Earth Elemental
         [305485] = { duration = 30, class = "SHAMAN", specID = { 262 } }, -- Lightning Lasso
-        [191634] = { duration = 60, class = "SHAMAN", specID = { 262 } }, -- Stormkeeper
-		[326059] = { duration = 45, class = "SHAMAN", specID = { 262 } }, -- Primordial Wave
+        [191634] = { duration = 60, class = "SHAMAN", specID = { 262 } }, -- Stormkeeper (Elemental)
+		[320125] = { duration = 30, class = "SHAMAN", specID = { 262 } }, -- Echoing Shock
 
         -- Enhancement
 
         [58875] = { duration = 60, class = "SHAMAN", specID = { 263 } }, -- Spirit Walk
         [196884] = { duration = 30, class = "SHAMAN", specID = { 263 } }, -- Feral Lunge
         [197214] = { duration = 40, class = "SHAMAN", specID = { 263 } }, -- Sundering
-        [201898] = { duration = 45, class = "SHAMAN", specID = { 263 } }, -- Windsong
         [204366] = { duration = 45, class = "SHAMAN", specID = { 263 } }, -- Thundercharge
-        [204945] = { duration = 60, class = "SHAMAN", specID = { 263 } }, -- Doom Winds
-		[320674] = { duration = 90, class = "SHAMAN", specID = { 263 } }, -- Chain Harvest
+		[51533] = { duration = 120, class = "SHAMAN", specID = { 263 } }, -- Feral Spirit
+		[320137] = { duration = 60, class = "SHAMAN", specID = { 263 } }, -- Stormkeeper (Enhancement)
 
         -- Restoration
 
-        [5394] = { duration = 30, class = "SHAMAN", specID = { 264 }, charges = 30 }, -- Healing Stream Totem
         [79206] = { duration = 60, class = "SHAMAN", specID = { 264 } }, -- Spiritwalker's Grace
         [98008] = { duration = 180, class = "SHAMAN", specID = { 264 } }, -- Spirit Link Totem
             [204293] = { parent = 98008, duration = 60 }, -- Spirit Link
@@ -487,7 +492,9 @@ addon.Cooldowns = {
         [198838] = { duration = 60, class = "SHAMAN", specID = { 264 } }, -- Earthen Wall Totem
         [204336] = { duration = 30, class = "SHAMAN", specID = { 264 } }, -- Grounding Totem
         [207399] = { duration = 300, class = "SHAMAN", specID = { 264 } }, -- Ancestral Protection Totem
-        [207778] = { duration = 45, class = "SHAMAN", specID = { 264 } }, -- Gift of the Queen
+        [16191] = { duration = 180, class = "SHAMAN", specID = { 264 } }, -- Mana Tide Totem
+		[51485] = { duration = 30, class = "SHAMAN", specID = { 264 } }, -- Earthgrab Totem
+		[77130] = { duration = 8, class = "SHAMAN", specID = { 264 } }, -- Purify Spirit
 
     -- Hunter
 
