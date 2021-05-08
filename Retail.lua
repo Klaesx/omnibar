@@ -241,12 +241,12 @@ addon.Cooldowns = {
 
     [1850] = { duration = 120, class = "DRUID" }, -- Dash
         [252216] = { parent = 1850, duration = 45 }, -- Tiger Dash
-    [5211] = { duration = 60, class = "DRUID" }, -- Mighty Bash
+    [5211] = { duration = 52, class = "DRUID" }, -- Mighty Bash
     [20484] = { duration = 600, class = "DRUID" }, -- Rebirth
-    [102359] = { duration = 30, class = "DRUID" }, -- Mass Entanglement
+    [102359] = { duration = 26, class = "DRUID" }, -- Mass Entanglement
     [102401] = { duration = 15, class = "DRUID" }, -- Wild Charge
     [132469] = { duration = 30, class = "DRUID" }, -- Typhoon
-	[319454] = { duration = 300, class = "DRUID" }, -- Heart of the Wild
+	[319454] = { duration = 258, class = "DRUID" }, -- Heart of the Wild
 	[106898] = { duration = 120, class = "DRUID" }, -- Stampeding Roar
 	[22812] = { duration = 60, class = "DRUID" }, -- Barkskin
     [99] = { duration = 30, class = "DRUID" }, -- Incapacitating Roar
@@ -326,7 +326,7 @@ addon.Cooldowns = {
 
         -- Arms
 
-        [118038] = { duration = 120, class = "WARRIOR", specID = { 71 } }, -- Die by the Sword
+        [118038] = { duration = 88, class = "WARRIOR", specID = { 71 } }, -- Die by the Sword
         [167105] = { duration = 45, class = "WARRIOR", specID = { 71 } }, -- Colossus Smash
             [262161] = { parent = 167105 }, -- Warbreaker
         [197690] = { duration = 6, class = "WARRIOR", specID = { 71 } }, -- Defensive Stance
@@ -653,7 +653,7 @@ addon.Cooldowns = {
         [185313] = { duration = 60, class = "ROGUE", specID = { 261 }, charges = 2 }, -- Shadow Dance
         [207736] = { duration = 120, class = "ROGUE", specID = { 261 } }, -- Shadowy Duel
         [212182] = { duration = 180, class = "ROGUE", specID = { 261 } }, -- Smoke Bomb
-        [213981] = { duration = 45, class = "ROGUE", specID = { 261 } }, -- Cold Blood
+        [213981] = { duration = 60, class = "ROGUE", specID = { 261 } }, -- Cold Blood
 
     -- Monk
 
