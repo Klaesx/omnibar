@@ -1,6 +1,10 @@
 local OmniBar = LibStub("AceAddon-3.0"):GetAddon("OmniBar")
 local L = LibStub("AceLocale-3.0"):GetLocale("OmniBar")
 
+local addonName, addon = ...
+
+local MAX_ARENA_SIZE = addon.MAX_ARENA_SIZE
+
 local _
 
 local points = {
@@ -28,9 +32,11 @@ local function GetSpellTooltipText(spellID)
 end
 
 local function IsSpellEnabled(info)
+	local spellID = tonumber(info[#info])
 	local key = info[2]
-	return OmniBar_IsSpellEnabled(_G[key], OmniBar.options.args.bars.args[key].args.spells.args[info[4]].args[info[5]].arg)
+	return OmniBar_IsSpellEnabled(_G[key], spellID)
 end
+
 local function IsUnitEnabled(info)
 	local key = info[2]
 	return OmniBar_IsUnitEnabled(_G[key], OmniBar.options.args.bars.args[key].args.units.args[info[4]].args[info[5]].arg)
@@ -42,6 +48,7 @@ StaticPopupDialogs["OMNIBAR_DELETE"] = {
 	button2 = NO,
 	OnAccept = function(self, data)
 		OmniBar:Delete(data)
+		OmniBar:OnEnable()
 	end,
 	timeout = 0,
 	whileDead = true,
@@ -53,11 +60,13 @@ function OmniBar:ToggleLock(button)
 	OmniBar_Position(_G[button.arg])
 	self.options.args.bars.args[button.arg].args.lock.name = self.db.profile.bars[button.arg].locked and L["Unlock"] or L["Lock"]
 end
+
 local function GetBars(key)
 	local bars = {}
 	for k in pairs(OmniBar.db.profile.bars) do if k ~= key then bars[k] = OmniBar.db.profile.bars[k].name end end
 	return bars
 end
+
 local function GetSpells()
 	local spells = {
 		uncheck = {
@@ -65,12 +74,8 @@ local function GetSpells()
 			type = "execute",
 			func = function(info)
 				local key = info[#info-2]
-				for option,_ in pairs(OmniBar.db.profile.bars[key]) do
-					if option:match("^spell") then
-						OmniBar.db.profile.bars[key][option] = false
-					end
-				end
-				OmniBar.db.profile.bars[key].noDefault = true
+				local bar = _G[key]
+				bar.settings.spells = {}
 				OmniBar:Refresh(true)
 			end,
 			order = 1,
@@ -81,38 +86,10 @@ local function GetSpells()
 			func = function(info)
 				local key = info[#info-2]
 				local bar = _G[key]
-				OmniBar.db.profile.bars[key].noDefault = nil
-				for spellID, spell in pairs(OmniBar.cooldowns) do
-					if spell.default then
-						OmniBar_CreateIcon(bar)
-						OmniBar.db.profile.bars[key]["spell"..spellID] = nil
-					end
-				end
+				bar.settings.spells = nil
 				OmniBar:Refresh(true)
 			end,
 			order = 2,
-		},
-		copy = {
-			name = "Copy From: ",
-			desc = "Copys all enabled spells from the selected OmniBar",
-			type = "select",
-			width = "normal",
-			values = GetBars(),
-			set = 	function(info, state)
-						local key = info[#info-2]
-						OmniBar.db.profile.bars[key].noDefault = true
-						for spellID, spell in pairs(OmniBar.cooldowns) do
-							if OmniBar.db.profile.bars[key]["spell"..spellID]~=nil then
-								OmniBar.db.profile.bars[key]["spell"..spellID] = nil
-							end
-							if OmniBar_IsSpellEnabled(_G[state], spellID) then
-								OmniBar_CreateIcon(_G[key])
-								OmniBar.db.profile.bars[key]["spell"..spellID] = true
-							end
-						end
-						OmniBar:Refresh(true)
-					end,
-			order = 3,
 		},
 	}
 	local descriptions = {}
@@ -139,8 +116,7 @@ local function GetSpells()
 						descriptions[spellID] = s:GetSpellDescription()
 					end)
 
-					spells[CLASS_SORT_ORDER[i]].args["spell"..spellID] = {
-						name = spellName,
+					spells[CLASS_SORT_ORDER[i]].args[tostring(spellID)] = {
 						type = "toggle",
 						get = IsSpellEnabled,
 						width = "full",
@@ -161,41 +137,6 @@ local function GetSpells()
 		end
 	end
 	return spells
-end
-
-local function GetUnits()
-	local units = {
-		AllEnemies = {
-			name = "All Enemies",
-			type = "group",
-			args = {
-				enabled0 = {
-					name = "Enable All Enemies",
-					type = "toggle",
-					get = IsUnitEnabled,
-					width = "full",
-					arg = 0,
-					desc = "Enable All Enemies",
-				} },
-		}
-	}
-	for i = 1, 3 do
-		units["arena"..i] = {
-			name = "arena"..i,
-			type = "group",
-			args = {},
-		}
-		units["arena"..i].args["enabled"..i] = {
-					name = "Enable Arena "..i,
-					type = "toggle",
-					get = IsUnitEnabled,
-					width = "full",
-					arg = i,
-					desc = "Track Cooldowns for Arena "..i,
-				}
-	end
-
-	return units
 end
 
 function OmniBar:AddBarToOptions(key, refresh)
@@ -620,22 +561,20 @@ function OmniBar:AddBarToOptions(key, refresh)
 				arg = key,
 				args = GetSpells(),
 				set = function(info, state)
-					local option = info[#info]
-					self.db.profile.bars[key][option] = state
+					local spellID = tonumber(info[#info])
+
+					-- set default spells explicitly
+					if (not self.db.profile.bars[key].spells) then
+						self.db.profile.bars[key].spells = {}
+						for k,v in pairs(OmniBar.cooldowns) do
+							if v.default then
+								self.db.profile.bars[key].spells[k] = true
+							end
+						end
+					end
+
+					self.db.profile.bars[key].spells[spellID] = state
 					OmniBar_CreateIcon(_G[key])
-					self:Refresh(true)
-				end,
-			},
-						units = {
-				name = "Units",
-				type = "group",
-				order = 14,
-				arg = key,
-				args = GetUnits(),
-				set = function(info, state)
-					local option = info[#info]
-					self.db.profile.bars[key][option] = state
-					OmniBar_ToggleUnit(_G[key], option)
 					self:Refresh(true)
 				end,
 			},
@@ -662,7 +601,72 @@ function OmniBar:AddBarToOptions(key, refresh)
 		},
 	}
 
+	self.options.args.bars.args[key].args.spells.args.copy = {
+		name = "Copy From: ",
+		desc = "Copies spells from the selected OmniBar",
+		type = "select",
+		width = "normal",
+		values = GetBars(key),
+		set = function(info, state)
+			local key = info[#info-2]
+			local dst = _G[key]
+			local src = _G[state]
+
+			if (not src.settings.spells) then
+				dst.settings.spells = nil
+				return
+			end
+
+			dst.settings.spells = {}
+			for k,v in pairs(src.settings.spells) do
+				dst.settings.spells[k] = v
+			end
+
+			OmniBar:Refresh(true)
+		end,
+		order = 3,
+	}
+
 	if WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC then
+		local units = {
+			all = {
+				name = "All Enemies",
+				type = "toggle",
+				width = "full",
+				desc = "Track Cooldowns for all enemies ",
+			}
+		}
+
+		for i = 1, MAX_ARENA_SIZE do
+			units["arena" .. i] = {
+				name = "Arena " .. i,
+				disabled = function()
+					return self.db.profile.bars[key].units.all
+				end,
+				type = "toggle",
+				width = "full",
+				desc = "Track Cooldowns for Arena " .. i,
+			}
+		end
+
+		self.options.args.bars.args[key].args.units = {
+			name = "Units",
+			type = "group",
+			order = 14,
+			arg = key,
+			args = units,
+			get = function(info, state)
+				local option = info[#info]
+				return self.db.profile.bars[key].units[option]
+			end,
+			set = function(info, state)
+				local option = info[#info]
+				self.db.profile.bars[key].units = self.db.profile.bars.units or {}
+				self.db.profile.bars[key].units[option] = state
+				self:Refresh(true)
+			end,
+		}
+
 		self.options.args.bars.args[key].args.settings.args.highlightFocus = {
 			name = L["Highlight Focus"],
 			desc = L["Draw a border around your focus"],
@@ -678,7 +682,9 @@ function OmniBar:AddBarToOptions(key, refresh)
 			type = "toggle",
 			order = 11,
 		}
+	end
 
+	if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
 		self.options.args.bars.args[key].args.visibility.args.ratedBattleground = {
 			name = L["Show in Rated Battlegrounds"],
 			desc = L["Show the icons in rated battlegrounds"],
@@ -710,7 +716,7 @@ local customSpellInfo = {
 		order = 1,
 		type = "description",
 		name = function(info)
-			local spellId = info[#info-1]:gsub("spell", "")
+			local spellId = info[#info-1]
 			return "|cffffd700 ".."Spell ID".."|r ".. spellId .."\n"
 		end,
 	},
@@ -719,7 +725,7 @@ local customSpellInfo = {
 		name = L["Delete"],
 		desc = L["Delete the cooldown"],
 		func = function(info)
-			local spellId = info[#info-1]:gsub("spell", "")
+			local spellId = info[#info-1]
 			spellId = tonumber(spellId)
 			OmniBar.db.global.cooldowns[spellId] = nil
 			OmniBar.cooldowns[spellId] = nil
@@ -745,13 +751,13 @@ local customSpellInfo = {
 		step = 1,
 		order = 4,
 		set = function(info, state)
-			local spellId = info[#info-1]:gsub("spell", "")
+			local spellId = info[#info-1]
 			spellId = tonumber(spellId)
 			OmniBar.db.global.cooldowns[spellId].duration.default = state
 			OmniBar:AddCustomSpells()
 		end,
 		get = function(info)
-			local spellId = info[#info-1]:gsub("spell", "")
+			local spellId = info[#info-1]
 			spellId = tonumber(spellId)
 			return OmniBar.db.global.cooldowns[spellId].duration.default
 		end,
@@ -767,7 +773,7 @@ local customSpellInfo = {
 		desc = L["Set the charges of the cooldown"],
 		set = function(info, state)
 			local option = info[#info]
-			local spellId = info[#info-1]:gsub("spell", "")
+			local spellId = info[#info-1]
 			spellId = tonumber(spellId)
 			if state == 1 then state = nil end
 			OmniBar.db.global.cooldowns[spellId][option] = state
@@ -775,7 +781,7 @@ local customSpellInfo = {
 		end,
 		get = function(info)
 			local option = info[#info]
-			local spellId = info[#info-1]:gsub("spell", "")
+			local spellId = info[#info-1]
 			spellId = tonumber(spellId)
 			local value = OmniBar.db.global.cooldowns[spellId][option]
 			if not value then return 1 end
@@ -790,7 +796,7 @@ local customSpellInfo = {
 		order = 5,
 		set = function(info, state)
 			local option = info[#info]
-			local spellId = info[#info-1]:gsub("spell", "")
+			local spellId = info[#info-1]
 			spellId = tonumber(spellId)
 			OmniBar.db.global.cooldowns[spellId].specID = nil
 			OmniBar.db.global.cooldowns[spellId].duration = { default = OmniBar.db.global.cooldowns[spellId].duration.default }
@@ -848,14 +854,14 @@ local customSpells = {
 	},
 }
 
-if WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC then
+if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
 	for i = 1, #specIDs do
 		local specID = specIDs[i]
 		local _, name, _, icon = GetSpecializationInfoByID(specID)
 		customSpellInfo["spec"..specID] = {
 			name = format("|T%s:20|t %s", icon, name),
 			hidden = function(info)
-				local spellId = info[#info-1]:gsub("spell", "")
+				local spellId = info[#info-1]
 				spellId = tonumber(spellId)
 				local specID = info[#info]:gsub("spec", "")
 				specID = tonumber(specID)
@@ -872,7 +878,7 @@ if WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC then
 					order = 1,
 					get = function(info)
 						local option = info[#info]
-						local spellId = info[#info-2]:gsub("spell", "")
+						local spellId = info[#info-2]
 						spellId = tonumber(spellId)
 						local specID = info[#info-1]:gsub("spec", "")
 						specID = tonumber(specID)
@@ -884,7 +890,7 @@ if WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC then
 					end,
 					set = function(info, state)
 						local option = info[#info]
-						local spellId = info[#info-2]:gsub("spell", "")
+						local spellId = info[#info-2]
 						spellId = tonumber(spellId)
 						local specID = info[#info-1]:gsub("spec", "")
 						specID = tonumber(specID)
@@ -926,7 +932,7 @@ if WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC then
 					order = 2,
 					set = function(info, state)
 						local option = info[#info]
-						local spellId = info[#info-2]:gsub("spell", "")
+						local spellId = info[#info-2]
 						spellId = tonumber(spellId)
 						local specID = info[#info-1]:gsub("spec", "")
 						specID = tonumber(specID)
@@ -938,7 +944,7 @@ if WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC then
 					end,
 					get = function(info)
 						local option = info[#info]
-						local spellId = info[#info-2]:gsub("spell", "")
+						local spellId = info[#info-2]
 						spellId = tonumber(spellId)
 						local specID = info[#info-1]:gsub("spec", "")
 						specID = tonumber(specID)
@@ -1016,14 +1022,14 @@ function OmniBar:SetupOptions()
 				args = customSpells,
 				set = function(info, state)
 					local option = info[#info]
-					local spellId = info[#info-1]:gsub("spell", "")
+					local spellId = info[#info-1]
 					spellId = tonumber(spellId)
 					OmniBar.db.global.cooldowns[spellId][option] = state
 					self:AddCustomSpells()
 				end,
 				get = function(info)
 					local option = info[#info]
-					local spellId = info[#info-1]:gsub("spell", "")
+					local spellId = info[#info-1]
 					spellId = tonumber(spellId)
 					if not spellId then return end
 					return OmniBar.db.global.cooldowns[spellId][option]
@@ -1033,7 +1039,7 @@ function OmniBar:SetupOptions()
 		},
 	}
 
-	if WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC then
+	if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
 		local LibDualSpec = LibStub('LibDualSpec-1.0')
 		LibDualSpec:EnhanceDatabase(self.db, "OmniBarDB")
 		LibDualSpec:EnhanceOptions(self.options.plugins.profiles.profiles, self.db)

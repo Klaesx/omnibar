@@ -26,6 +26,8 @@ local order = {
 
 local resets = addon.Resets
 
+local MAX_ARENA_SIZE = addon.MAX_ARENA_SIZE
+
 -- Defaults
 local units = {
 	enabled0 = {default = true},
@@ -126,6 +128,8 @@ function OmniBar:Delete(key, keepProfile)
 	if WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC then
 		bar:UnregisterEvent("PLAYER_FOCUS_CHANGED")
 		bar:UnregisterEvent("ARENA_OPPONENT_UPDATE")
+	end
+	if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
 		bar:UnregisterEvent("ARENA_PREP_OPPONENT_SPECIALIZATIONS")
 	end
 	bar:Hide()
@@ -213,6 +217,7 @@ function OmniBar:Initialize(key, name)
 	local f = _G[key] or CreateFrame("Frame", key, UIParent, "OmniBarTemplate")
 	f:Show()
 	f.settings = self.db.profile.bars[key]
+	f.settings.units = f.settings.units or { all = true }
 	f.settings.align = f.settings.align or "CENTER"
 	f.settings.maxIcons = f.settings.maxIcons or 500
 	f.key = key
@@ -226,6 +231,24 @@ function OmniBar:Initialize(key, name)
 	f:RegisterForDrag("LeftButton")
 
 	f.anchor.text:SetText(f.settings.name)
+
+	-- Upgrade custom spells
+	for k,v in pairs(f.settings) do
+		local spellID = tonumber(k:match("^spell(%d+)"))
+		if spellID then
+			if (not f.settings.spells) then
+				f.settings.spells = {}
+				if (not f.settings.noDefault) then
+					for k,v in pairs(cooldowns) do
+						if v.default then f.settings.spells[k] = true end
+					end
+				end
+			end
+			f.settings.spells[spellID] = v
+			f.settings[k] = nil
+		end
+	end
+	f.settings.noDefault = nil
 
 	-- Load the settings
 	OmniBar_LoadSettings(f)
@@ -256,6 +279,9 @@ function OmniBar:Initialize(key, name)
 	if WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC then
 		f:RegisterEvent("PLAYER_FOCUS_CHANGED")
 		f:RegisterEvent("ARENA_OPPONENT_UPDATE")
+	end
+
+	if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
 		f:RegisterEvent("ARENA_PREP_OPPONENT_SPECIALIZATIONS")
 	end
 
@@ -276,6 +302,7 @@ function OmniBar:Create()
 		if not self.db.profile.bars[key] then
 			self:Initialize(key, "OmniBar "..self.index - 1)
 			self:AddBarToOptions(key, true)
+			self:OnEnable()
 			return
 		end
 	end
@@ -302,7 +329,7 @@ local Masque = LibStub and LibStub("Masque", true)
 
 -- create a lookup table to translate spec names into IDs
 local specNames = {}
-if WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC then
+if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
 	for classID = 1, MAX_CLASSES do
 		local _, classToken = GetClassInfo(classID)
 		specNames[classToken] = {}
@@ -408,8 +435,9 @@ function OmniBar_UpdateBorders(self)
 end
 
 function OmniBar_UpdateArenaSpecs(self)
+	if WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE then return end
 	if self.zone ~= "arena" then return end
-	for i = 1, 5 do
+	for i = 1, MAX_ARENA_SIZE do
 		local specID = GetArenaOpponentSpec(i)
 		if specID and specID > 0 then
 			local name = GetUnitName("arena"..i, true)
@@ -450,9 +478,9 @@ end
 
 function OmniBar_OnEvent(self, event, ...)
 	if event == "COMBAT_LOG_EVENT_UNFILTERED" then
-		local _, event, _, sourceGUID, sourceName, sourceFlags, _,_,_,_,_, spellID, spellName = CombatLogGetCurrentEventInfo()
 		if self.disabled then return end
-		if (event == "SPELL_CAST_SUCCESS" or event == "SPELL_AURA_APPLIED") and bit.band(sourceFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) ~= 0 then
+		local _, subEvent, _, sourceGUID, sourceName, sourceFlags, _,_,_,_,_, spellID, spellName = CombatLogGetCurrentEventInfo()
+		if (subEvent == "SPELL_CAST_SUCCESS" or subEvent == "SPELL_AURA_APPLIED") and bit.band(sourceFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) ~= 0 then
 			if spellID == 0 and spellIdByName then spellID = spellIdByName[spellName] end
 			if cooldowns[spellID] then
 				OmniBar_UpdateArenaSpecs(self)
@@ -597,31 +625,16 @@ function OmniBar_LoadPosition(self)
 end
 
 function OmniBar_IsSpellEnabled(self, spellID)
-	if not spellID then return end
-	-- Check for an explicit rule
-	local key = "spell"..spellID
-	if type(self.settings[key]) == "boolean" then
-		if self.settings[key] then
-			return true
-		end
-	elseif not self.settings.noDefault and cooldowns[spellID].default then
-		-- Not user-set, but a default cooldown
-		return true
-	end
+	if (not spellID) then return end
+
+	if (not self.settings.spells) then return cooldowns[spellID].default end
+
+	return self.settings.spells[spellID]
 end
-function OmniBar_IsUnitEnabled(self, unitID)
-	if not unitID then return end
-	-- Check for an explicit rule
-	local key = "enabled"..unitID
-	if type(self.settings[key]) == "boolean" then
-		if self.settings[key] then
-			return true
-		end
-	elseif not self.settings.noDefault and units[key].default then
-		-- Not user-set, but a default cooldown
-		return true
-	end
-	return false
+
+function OmniBar_IsUnitEnabled(self, unit)
+	if self.settings.units.all then return true end
+	if unit and self.settings.units[unit] then return true end
 end
 
 function OmniBar_Center(self)
@@ -716,21 +729,22 @@ function OmniBar_AddIcon(self, spellID, sourceGUID, sourceName, init, test, spec
 	-- Check for parent spellID
 	local originalSpellID = spellID
 	if cooldowns[spellID].parent then spellID = cooldowns[spellID].parent end
-	local unitID = 0
-	if sourceGUID ~= nil then
-		if UnitGUID("arena1") == sourceGUID or sourceGUID == 1 then
-			unitID = 1
-			else if UnitGUID("arena2") == sourceGUID or sourceGUID == 2 then
-				unitID = 2
-				else if UnitGUID("arena3") == sourceGUID or sourceGUID == 3 then
-					unitID = 3
+
+	if WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC then
+		local unit
+		if sourceGUID ~= nil then
+			for i = 1, MAX_ARENA_SIZE do
+				local u = "arena" .. i
+				if UnitGUID(u) == sourceGUID then
+					unit = u
+					break
 				end
 			end
 		end
+		if (not OmniBar_IsUnitEnabled(self, unit)) then return end
 	end
 
-	if not OmniBar_IsSpellEnabled(self, spellID) then return end
-	if not test then if not OmniBar_IsUnitEnabled(self, unitID) then return end end
+	if (not OmniBar_IsSpellEnabled(self, spellID)) then return end
 
 	local icon, duplicate
 
@@ -903,6 +917,7 @@ function OmniBar_UpdateIcons(self)
 end
 
 function OmniBar_Test(self)
+	if (not self) then return end
 	self.disabled = nil
 	OmniBar_RefreshIcons(self)
 	for k,v in pairs(cooldowns) do
@@ -981,8 +996,7 @@ function OmniBar_Position(self)
 	end
 	OmniBar_ShowAnchor(self)
 end
-function OmniBar_ToggleUnit(self, unitID)
-end
+
 function OmniBar:Test()
 	for key,_ in pairs(self.db.profile.bars) do
 		OmniBar_Test(_G[key])
