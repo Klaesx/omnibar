@@ -29,12 +29,6 @@ local resets = addon.Resets
 local MAX_ARENA_SIZE = addon.MAX_ARENA_SIZE
 
 -- Defaults
-local units = {
-	enabled0 = {default = true},
-	enabled1 = {default = true},
-	enabled2 = {default = true},
-	enabled3 = {default = true},
-}
 local defaults = {
 	size                 = 40,
 	columns              = 8,
@@ -456,7 +450,8 @@ function OmniBar_SetZone(self, refresh)
 
 	self.zone = zone
 	local rated = IsRatedBattleground and IsRatedBattleground()
-	self.disabled = (zone == "arena" and not self.settings.arena) or
+	self.disabled = (GetZonePVPInfo() == "sanctuary") or
+		(zone == "arena" and not self.settings.arena) or
 		(rated and not self.settings.ratedBattleground) or
 		(zone == "pvp" and not self.settings.battleground and not rated) or
 		(zone == "scenario" and not self.settings.scenario) or
@@ -531,7 +526,7 @@ function OmniBar_OnEvent(self, event, ...)
 
 	elseif event == "ARENA_PREP_OPPONENT_SPECIALIZATIONS" or event == "ARENA_OPPONENT_UPDATE" then
 		if self.disabled or not self.settings.adaptive then return end
-		for i = 1, 5 do
+		for i = 1, MAX_ARENA_SIZE do
 			local specID = GetArenaOpponentSpec(i)
 			if specID and specID > 0 then
 				-- only add icons if show unused is checked
