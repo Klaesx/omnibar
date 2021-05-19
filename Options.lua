@@ -1,11 +1,49 @@
-local OmniBar = LibStub("AceAddon-3.0"):GetAddon("OmniBar")
-local L = LibStub("AceLocale-3.0"):GetLocale("OmniBar")
+
+-- OmniBar by Jordon
 
 local addonName, addon = ...
 
+local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
+local CLASS_SORT_ORDER = CLASS_SORT_ORDER
+local CreateFrame = CreateFrame
+local DELETE = DELETE
+local GENERAL = GENERAL
+local GetAddOnMetadata = GetAddOnMetadata
+local GetSpecializationInfoByID = GetSpecializationInfoByID
+local GetSpellInfo = GetSpellInfo
+local GetSpellTexture = GetSpellTexture
+local LOCALIZED_CLASS_NAMES_MALE = LOCALIZED_CLASS_NAMES_MALE
+local LibStub = LibStub
+local MAX_CLASSES = MAX_CLASSES
+local NO = NO
+local OmniBar_CreateIcon = OmniBar_CreateIcon
+local OmniBar_IsSpellEnabled = OmniBar_IsSpellEnabled
+local OmniBar_IsUnitEnabled = OmniBar_IsUnitEnabled
+local OmniBar_LoadPosition = OmniBar_LoadPosition
+local OmniBar_OnEvent = OmniBar_OnEvent
+local OmniBar_Position = OmniBar_Position
+local OmniBar_SavePosition = OmniBar_SavePosition
+local SecondsToTime = SecondsToTime
+local Spell = Spell
+local StaticPopupDialogs = StaticPopupDialogs
+local StaticPopup_Show = StaticPopup_Show
+local UIParent = UIParent
+local WOW_PROJECT_CLASSIC = WOW_PROJECT_CLASSIC
+local WOW_PROJECT_ID = WOW_PROJECT_ID
+local WOW_PROJECT_MAINLINE = WOW_PROJECT_MAINLINE
+local YES = YES
+local format = format
+local nop = nop
+
+local OmniBar = LibStub("AceAddon-3.0"):GetAddon("OmniBar")
+local L = LibStub("AceLocale-3.0"):GetLocale("OmniBar")
+
 local MAX_ARENA_SIZE = addon.MAX_ARENA_SIZE
 
-local _
+local LOCALIZED_CLASS_NAMES_MALE_WITH_GENERAL = LOCALIZED_CLASS_NAMES_MALE
+LOCALIZED_CLASS_NAMES_MALE_WITH_GENERAL["GENERAL"] = GENERAL
+local CLASS_SORT_ORDER_WITH_GENERAL = CLASS_SORT_ORDER
+CLASS_SORT_ORDER_WITH_GENERAL[0] = "GENERAL"
 
 local points = {
 	TOPLEFT = L["Top Left"],
@@ -93,18 +131,29 @@ local function GetSpells()
 		},
 	}
 	local descriptions = {}
-	for i = 1, MAX_CLASSES do
+	for i = 0, MAX_CLASSES do
 
-		spells[CLASS_SORT_ORDER[i]] = {
-			name = LOCALIZED_CLASS_NAMES_MALE[CLASS_SORT_ORDER[i]],
+		spells[CLASS_SORT_ORDER_WITH_GENERAL[i]] = {
+			name = LOCALIZED_CLASS_NAMES_MALE_WITH_GENERAL[CLASS_SORT_ORDER_WITH_GENERAL[i]],
 			type = "group",
 			args = {},
+			hidden = function(info)
+				local bar = info[#info-2]
+				local class = info[#info]
+				return next(info.options.args.bars.args[bar].args.spells.args[class].args) == nil
+			end,
 			icon = "Interface\\Glues\\CharacterCreate\\UI-CharacterCreate-Classes",
-			iconCoords = CLASS_ICON_TCOORDS[CLASS_SORT_ORDER[i]]
+			iconCoords = CLASS_ICON_TCOORDS[CLASS_SORT_ORDER_WITH_GENERAL[i]]
 		}
 
-		for spellID, spell in pairs(OmniBar.cooldowns) do
-			if spell.class and spell.class == CLASS_SORT_ORDER[i] then
+		if i == 0 then
+			spells[CLASS_SORT_ORDER_WITH_GENERAL[i]]["icon"] = "Interface\\Icons\\Trade_Engineering"
+			spells[CLASS_SORT_ORDER_WITH_GENERAL[i]]["iconCoords"] = nil
+			spells[CLASS_SORT_ORDER_WITH_GENERAL[i]]["order"] = 0
+		end
+
+		for spellID, spell in pairs(addon.Cooldowns) do
+			if spell.class and spell.class == CLASS_SORT_ORDER_WITH_GENERAL[i] then
 				local spellName = GetSpellInfo(spellID)
 				if spellName then
 					local spellTexture = GetSpellTexture(spellID) or ""
@@ -116,10 +165,11 @@ local function GetSpells()
 						descriptions[spellID] = s:GetSpellDescription()
 					end)
 
-					spells[CLASS_SORT_ORDER[i]].args[tostring(spellID)] = {
+					spells[CLASS_SORT_ORDER_WITH_GENERAL[i]].args[tostring(spellID)] = {
 						type = "toggle",
 						get = IsSpellEnabled,
 						width = "full",
+						hidden = nop,
 						arg = spellID,
 						desc = function()
 							local duration = type(spell.duration) == "number" and spell.duration or spell.duration.default
@@ -566,7 +616,7 @@ function OmniBar:AddBarToOptions(key, refresh)
 					-- set default spells explicitly
 					if (not self.db.profile.bars[key].spells) then
 						self.db.profile.bars[key].spells = {}
-						for k,v in pairs(OmniBar.cooldowns) do
+						for k,v in pairs(addon.Cooldowns) do
 							if v.default then
 								self.db.profile.bars[key].spells[k] = true
 							end
@@ -638,14 +688,15 @@ function OmniBar:AddBarToOptions(key, refresh)
 		}
 
 		for i = 1, MAX_ARENA_SIZE do
+			local name = ARENA .. " " .. i
 			units["arena" .. i] = {
-				name = "Arena " .. i,
+				name = name,
 				disabled = function()
 					return self.db.profile.bars[key].units.all
 				end,
 				type = "toggle",
 				width = "full",
-				desc = "Track Cooldowns for Arena " .. i,
+				desc = "Track Cooldowns for " .. name,
 			}
 		end
 
@@ -728,9 +779,9 @@ local customSpellInfo = {
 			local spellId = info[#info-1]
 			spellId = tonumber(spellId)
 			OmniBar.db.global.cooldowns[spellId] = nil
-			OmniBar.cooldowns[spellId] = nil
+			addon.Cooldowns[spellId] = nil
 			OmniBar:AddCustomSpells()
-			OmniBar.options.args.customSpells.args[info[#info-1]] = nil
+			info.options.args.customSpells.args[info[#info-1]] = nil
 			OmniBar:OnEnable() -- to refresh the bar spells tab
 			LibStub("AceConfigRegistry-3.0"):NotifyChange("OmniBar")
 		end,
@@ -747,7 +798,7 @@ local customSpellInfo = {
 		desc = L["Set the duration of the cooldown"],
 		type = "range",
 		min = 1,
-		max = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC and 1200 or 600,
+		softMax = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC and 1200 or 600,
 		step = 1,
 		order = 4,
 		set = function(info, state)
@@ -792,7 +843,7 @@ local customSpellInfo = {
 		name = L["Class"],
 		desc = L["Set the class of the cooldown"],
 		type = "select",
-		values = LOCALIZED_CLASS_NAMES_MALE,
+		values = LOCALIZED_CLASS_NAMES_MALE_WITH_GENERAL,
 		order = 5,
 		set = function(info, state)
 			local option = info[#info]
@@ -816,7 +867,7 @@ local customSpells = {
 			local name = GetSpellInfo(spellId)
 			if OmniBar.db.global.cooldowns[spellId] then return end
 			if spellId and name then
-				OmniBar.db.global.cooldowns[spellId] = OmniBar.cooldowns[spellId] or { custom = true, duration = { default = 30 } , class = "DEATHKNIGHT" }
+				OmniBar.db.global.cooldowns[spellId] = addon.Cooldowns[spellId] or { custom = true, duration = { default = 30 } , class = "GENERAL" }
 
 				local duration
 				-- If it's a child convert it
@@ -826,7 +877,7 @@ local customSpells = {
 						duration = OmniBar.db.global.cooldowns[spellId].duration
 					end
 
-					OmniBar.db.global.cooldowns[spellId] = OmniBar:CopyCooldown(OmniBar.cooldowns[OmniBar.db.global.cooldowns[spellId].parent])
+					OmniBar.db.global.cooldowns[spellId] = OmniBar:CopyCooldown(addon.Cooldowns[OmniBar.db.global.cooldowns[spellId].parent])
 
 					-- Restore child's duration
 					if duration then
@@ -840,7 +891,7 @@ local customSpells = {
 				end
 				OmniBar:AddCustomSpells()
 
-				OmniBar.options.args.customSpells.args["spell"..spellId] = {
+				OmniBar.options.args.customSpells.args[tostring(spellId)] = {
 					name = name,
 					type = "group",
 					childGroups = "tab",
@@ -927,7 +978,7 @@ if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
 					desc = L["Set the duration of the cooldown"],
 					type = "range",
 					min = 1,
-					max = 600,
+					softMax = 600,
 					step = 1,
 					order = 2,
 					set = function(info, state)
@@ -959,7 +1010,7 @@ end
 function OmniBar:SetupOptions()
 
 	for spellId, spell in pairs(OmniBar.db.global.cooldowns) do
-		customSpells["spell"..spellId] = {
+		customSpells[tostring(spellId)] = {
 			name = GetSpellInfo(spellId),
 			type = "group",
 			childGroups = "tab",

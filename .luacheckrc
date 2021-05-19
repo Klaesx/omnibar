@@ -6,6 +6,7 @@ exclude_files = {
 }
 ignore = {
     "11./SLASH_.*",
+    "122",
     "211",
     "212",
     "213",
@@ -16,6 +17,7 @@ ignore = {
     "433",
 }
 read_globals = {
+    "ARENA",
     "CLASS_ICON_TCOORDS",
     "CLASS_SORT_ORDER",
     "COMBATLOG_FILTER_STRING_UNKNOWN_UNITS",
@@ -23,6 +25,8 @@ read_globals = {
     "CombatLogGetCurrentEventInfo",
     "CreateFrame",
     "DELETE",
+    "FOCUS",
+    "GENERAL",
     "GetAddOnMetadata",
     "GetArenaOpponentSpec",
     "GetBattlefieldScore",
@@ -45,9 +49,11 @@ read_globals = {
     "LibStub",
     "MAX_CLASSES",
     "NO",
+    "PLAYER",
     "SecondsToTime",
     "Spell",
     "StaticPopup_Show",
+    "TARGET",
     "UIParent",
     "UnitClass",
     "UnitGUID",
@@ -61,6 +67,7 @@ read_globals = {
     "YES",
     "bit",
     "format",
+    "nop",
     "wipe",
 }
 globals = {
@@ -77,6 +84,7 @@ globals = {
     "OmniBar_OnEvent",
     "OmniBar_Position",
     "OmniBar_RefreshIcons",
+    "OmniBar_ResetPosition",
     "OmniBar_SavePosition",
     "OmniBar_SetZone",
     "OmniBar_ShowAnchor",
