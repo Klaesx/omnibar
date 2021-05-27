@@ -24,9 +24,18 @@ addon.Resets = {
         - Premeditation
       ]]
     [14185] = { 13877, 408, 2094, 2983, 5277, 1776, 14278, 14183 },
+
+    --[[ Summon Felhunter
+        - Spell Lock
+      ]]
+    [691] = { 19244 },
 }
 
 addon.Cooldowns = {
+
+    -- General
+
+    [42292] = { duration = 300, class = "GENERAL", icon = 133453, default = true }, -- PvP Trinket
 
     -- Priest
 
